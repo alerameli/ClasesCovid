@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">ClasesCovid</string>
+    <string name="hint_usuario">Usuario</string>
+    <string name="hint_contraseña">Contraseña</string>
+    <string name="hint_nombre">Nombres</string>
+    <string name="hint_apellidos">Apellidos</string>
+    <string name="hint_correo">Correo electronico</string>
+    <string name="hint_celular">Celular</string>
+    <string name="hint_nombreEvento">Nombre de la clase</string>
+    <string name="hint_lugarEvento">Lugar de la clase</string>
+    <string name="hint_fecha">Fecha de la clase</string>
+    <string name="txt_hora">Hora de la clase</string>
+    <string name="hint_ContraseñaClase">Contraseña de la clase</string>
+    <string name="hint_descripcion">Descripcion de la clase</string>
+    <string name="txt_login">Log in</string>
+    <string name="txt_SignUp">Sign up</string>
+    <string name="txt_inciar">Iniciar sesion</string>
+    <string name="txt_registrate">Registrate</string>
+    <string name="txt_registrarse">Registrarse</string>
+    <string name="title_activity_bottom_alumno">BottomAlumno</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="txt_AgregarClase">Agregar clase</string>
+    <string name="txt_InfoClase">Informacion de la clase</string>
+    <string name="txt_Status">Status</string>
+    <string name="txt_host">Anfitrion de clase</string>
+    <string name="txt_fecha">Fecha</string>
+    <string name="txt_lugar">Lugar</string>
+    <string name="txthora">Hora</string>
+</resources>

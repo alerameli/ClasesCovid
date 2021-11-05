@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/ClasesDisponibles"
+        android:title="Clases Disponibles"/>
+    <item
+        android:id="@+id/MisProximasClases"
+        android:title="Mis proximas clases"/>
+    <item
+        android:id="@+id/MisClasesPasadas"
+        android:title="Mis clases pasadas" />
+    <item
+        android:id="@+id/GenerarAlerta"
+        android:title="Generar alerta covid"/>
+</menu>

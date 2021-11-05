@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/MisClasesF"
+        android:icon="@drawable/ic_baseline_class_24"
+        android:title="Mis clases Futuras"></item>
+    <item
+        android:id="@+id/MisClasesP"
+        android:icon="@drawable/ic_baseline_class_24"
+        android:title="Mis clases Pasadas"></item>
+    <item
+        android:id="@+id/CovidM"
+        android:icon="@drawable/ic_baseline_coronavirus_24"
+        android:title="Covid"></item>
+</menu>
