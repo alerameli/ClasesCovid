@@ -5,8 +5,6 @@ public class Clase {
     String nombre,lugar,hora,descripcion,fecha,contra,status,host;
     int id;
 
-
-
     public Clase(int id, String nombre, String lugar, String hora, String descripcion, String fecha, String contra, String status, String host) {
         this.id=id;
         this.nombre = nombre;

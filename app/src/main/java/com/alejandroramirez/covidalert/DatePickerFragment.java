@@ -11,8 +11,10 @@ import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment {
 
+    // Se crea un DatePickerDialog para mostrar un calendario
     private DatePickerDialog.OnDateSetListener listener;
 
+    // Se crea una nueva instancia a la variable DatePickerDialog
     public static DatePickerFragment newInstance(DatePickerDialog.OnDateSetListener listener) {
         DatePickerFragment fragment = new DatePickerFragment();
         fragment.setListener(listener);
@@ -23,6 +25,7 @@ public class DatePickerFragment extends DialogFragment {
         this.listener = listener;
     }
 
+    // Regresa un calendario a la actividad con los datos del Dia, Mes y Años
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar c = Calendar.getInstance();
