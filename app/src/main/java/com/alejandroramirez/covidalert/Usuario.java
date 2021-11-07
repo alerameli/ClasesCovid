@@ -4,10 +4,9 @@ import java.io.Serializable;
 
 public class Usuario implements Serializable {
 
-
+    // Variables del campo usuario
     private String nombres, apellidos, correo, celular, tipo, usuario, contraseña;
-    int id;
-
+    private int id;
 
     public int getId() { return id; }
 
