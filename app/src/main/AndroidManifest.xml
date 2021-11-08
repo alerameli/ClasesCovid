@@ -15,13 +15,7 @@
             android:name=".AgregarClase"
             android:exported="true" />
         <activity
-            android:name=".PaginaClasesPasasdasAlumno"
-            android:exported="true" />
-        <activity
-            android:name=".PaginaClasesFuturasAlumno"
-            android:exported="true" />
-        <activity
-            android:name=".VerInfoClaseAlumno"
+            android:name=".VerInfoClaseGeneral"
             android:exported="true" />
         <activity
             android:name=".SignUpActivity"

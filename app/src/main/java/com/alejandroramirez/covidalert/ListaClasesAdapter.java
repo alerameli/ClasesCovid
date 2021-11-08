@@ -57,7 +57,7 @@ public class ListaClasesAdapter extends RecyclerView.Adapter<ListaClasesAdapter.
                 @Override
                 public void onClick(View view) {
                     Context contexto = view.getContext();
-                    Intent intento = new Intent(contexto, VerInfoClaseAlumno.class);
+                    Intent intento = new Intent(contexto, VerInfoClaseGeneral.class);
                     intento.putExtra("usuario",user);
                     intento.putExtra("ID", listaClases.get(getAdapterPosition()).getId());
                     contexto.startActivity(intento);

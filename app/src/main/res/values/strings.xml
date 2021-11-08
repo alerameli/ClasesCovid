@@ -21,11 +21,14 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="txt_AgregarClase">Agregar clase</string>
+    <string name="txt_AgregarClase">Guardar clase</string>
     <string name="txt_InfoClase">Informacion de la clase</string>
     <string name="txt_Status">Status</string>
     <string name="txt_host">Anfitrion de clase</string>
     <string name="txt_fecha">Fecha</string>
     <string name="txt_lugar">Lugar</string>
     <string name="txthora">Hora</string>
+    <string name="txtInscribirse">Inscribirse</string>
+    <string name="txtDesincribirse">Desinscribirse</string>
+    <string name="txtEditar">Editar clase</string>
 </resources>
