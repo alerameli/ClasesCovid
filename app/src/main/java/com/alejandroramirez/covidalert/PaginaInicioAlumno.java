@@ -53,7 +53,7 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
         usuario = (Usuario) getIntent().getSerializableExtra("usuario");
 
         // Se crea una URL para mostrar las diferentes clases para el "Usuario"
-        URL = "https://a217200082.000webhostapp.com/mostrarClasesA.php?AIDI=" + usuario.getId();
+        URL = "https://a217200082.000webhostapp.com/mostrarClasesDisponiblesAlumno.php?AIDI=" + usuario.getId();
 
         // Se inicializa el RecyclerView
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -98,7 +98,7 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
             }
 
             // Se crea un adaptador para el RecycleView
-            adapter = new ListaClasesAdapter(usuario,listaClases);
+            adapter = new ListaClasesAdapter(usuario, listaClases);
 
             // Se añade el adaptador en el RecycleView
             rv.setAdapter(adapter);
@@ -122,21 +122,24 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
     }
 
     // Acciones que realiza el usuario al seleccionar un item del menu.
-    // Al accionar algun item, se inicializa una clase.
+    // Al accionar algun item, se rellena el recyclerView con la informacion correcta.
     @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.ClasesDisponibles:
+                URL = "https://a217200082.000webhostapp.com/mostrarClasesDisponiblesAlumno.php?AIDI=" + usuario.getId();
+                listaClases.clear();
+                listarClases();
                 break;
             case R.id.MisProximasClases:
-                Intent intento=new Intent(getApplicationContext(),PaginaClasesFuturasAlumno.class);
-                intento.putExtra("usuario",usuario);
-                startActivity(intento);
+                URL = "https://a217200082.000webhostapp.com/mostrarClasesFuturasAlumno.php?AIDI=" + usuario.getId();
+                listaClases.clear();
+                listarClases();
                 break;
             case R.id.MisClasesPasadas:
-                Intent intento2=new Intent(getApplicationContext(),PaginaClasesPasasdasAlumno.class);
-                intento2.putExtra("usuario",usuario);
-                startActivity(intento2);
+                URL = "https://a217200082.000webhostapp.com/mostrarClasesPasadasAlumno.php?AIDI=" + usuario.getId();
+                listaClases.clear();
+                listarClases();
                 break;
             case R.id.GenerarAlerta:
                 break;

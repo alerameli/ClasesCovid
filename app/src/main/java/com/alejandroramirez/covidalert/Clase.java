@@ -1,6 +1,8 @@
 package com.alejandroramirez.covidalert;
 
-public class Clase {
+import java.io.Serializable;
+
+public class Clase implements Serializable {
 
     String nombre,lugar,hora,descripcion,fecha,contra,status,host;
     int id;

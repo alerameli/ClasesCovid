@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -61,13 +65,11 @@ public class PaginaInicioMaestro extends AppCompatActivity implements Response.E
         listarClases();
 
         // Al accionar el boton flotante, iniciara una clase "AgregarClase"
-        fabAgregar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intento = new Intent(getApplicationContext(), AgregarClase.class);
-                intento.putExtra("usuario", usuario);
-                startActivity(intento);
-            }
+        fabAgregar.setOnClickListener(view -> {
+            Intent intento = new Intent(getApplicationContext(), AgregarClase.class);
+            intento.putExtra("Edicion","agregar");
+            intento.putExtra("usuario", usuario);
+            startActivity(intento);
         });
     }
 
@@ -106,7 +108,6 @@ public class PaginaInicioMaestro extends AppCompatActivity implements Response.E
                         claseObject.getString("clase_status"),
                         claseObject.getString("clase_propietario")
                 );
-
                 // Se agregan al listado de clases
                 listaClases.add(clase);
             }
@@ -120,5 +121,33 @@ public class PaginaInicioMaestro extends AppCompatActivity implements Response.E
         } catch (JSONException e) {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // Menu para las distintas acciones que puede realizar el usuario
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_acciones_maestro, menu);
+        return true;
+    }
+
+    // Acciones que realiza el usuario al seleccionar un item del menu.
+    // Al accionar algun item, se inicializa una clase.
+    @SuppressLint("NonConstantResourceId")
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.MisClasesFuturasM:
+                URL = "https://a217200082.000webhostapp.com/mostrarClasesFuturasMaestro.php?AIDI=" + usuario.getId();
+                listaClases.clear();
+                listarClases();
+                break;
+            case R.id.MisClasesPasadasM:
+                URL = "https://a217200082.000webhostapp.com/mostrarClasesPasadasMaestro.php?AIDI=" + usuario.getId();
+                listaClases.clear();
+                listarClases();
+                break;
+            case R.id.GenerarAlertaM:
+                break;
+        }
+        return true;
     }
 }
