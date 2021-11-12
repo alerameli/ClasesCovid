@@ -25,7 +25,14 @@ public class ListaClasesAdapter extends RecyclerView.Adapter<ListaClasesAdapter.
     @NonNull
     @Override
     public ClaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        /*
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_clases, null);
+        return new ClaseViewHolder(usuario,view);
+
+         */
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_clases, parent,false);
+        RecyclerView.LayoutParams lp=new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(lp);
         return new ClaseViewHolder(usuario,view);
     }
 
@@ -61,8 +68,6 @@ public class ListaClasesAdapter extends RecyclerView.Adapter<ListaClasesAdapter.
                     intento.putExtra("usuario",user);
                     intento.putExtra("ID", listaClases.get(getAdapterPosition()).getId());
                     contexto.startActivity(intento);
-
-
                 }
             });
         }

@@ -2,6 +2,7 @@ package com.alejandroramirez.covidalert;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements Response.ErrorListener, Response.Listener<JSONObject> {
 
@@ -72,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
     // Error en la obtencion de la url
     @Override
     public void onErrorResponse(VolleyError error) {
-        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Error al introducir usuario o contraseña", Toast.LENGTH_SHORT).show();
     }
 
     // Se creara un objeto usuario y se obtendra los datos de la base de datos y
@@ -100,12 +107,12 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
             usuario.setContraseña(jsonObject.optString("usuario_contraseña"));
             usuario.setTipo(jsonObject.optString("usuario_tipo"));
         } catch (JSONException e) {
-            Toast.makeText(getApplicationContext(), "errore joven", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Error al introducir usuario o contraseña", Toast.LENGTH_SHORT).show();
         }
-        Intent intento=null;
+        Intent intento = null;
         // Se obtiene del campo usuario el tipo de usuario, para poder iniciar su respectiva
         // actividad
-        switch (usuario.getTipo()){
+        switch (usuario.getTipo()) {
             case "Alumno":
                 intento = new Intent(getApplicationContext(), PaginaInicioAlumno.class);
                 break;
@@ -116,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements Response.ErrorLis
         assert intento != null;
 
         // Se inicia la actividad de pendiendo del tipo de usuario obtenido
-        intento.putExtra("usuario",usuario);
+        intento.putExtra("usuario", usuario);
         startActivity(intento);
     }
 }

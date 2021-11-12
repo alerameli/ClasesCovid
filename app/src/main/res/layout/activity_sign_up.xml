@@ -4,25 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#BBD5C1"
     tools:context=".SignUpActivity">
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:gravity="center"
         android:text="@string/txt_registrate"
+        android:background="#4079BF"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"
+        android:fontFamily="@font/fugaz_one"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.057" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/et_SU_Nombres"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:background="@drawable/borde_redondo"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/hint_nombre"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,37 +42,43 @@
 
     <EditText
         android:id="@+id/et_SU_Apellidos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:background="@drawable/borde_redondo"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/hint_apellidos"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.228" />
+        app:layout_constraintVertical_bias="0.226" />
 
     <EditText
         android:id="@+id/et_SU_Correo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:background="@drawable/borde_redondo"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/hint_correo"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.467"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.332" />
+        app:layout_constraintVertical_bias="0.33" />
 
     <EditText
         android:id="@+id/et_SU_Celular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:background="@drawable/borde_redondo"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/hint_celular"
         android:inputType="phone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -72,32 +86,35 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.472" />
+        app:layout_constraintVertical_bias="0.443" />
 
     <EditText
         android:id="@+id/et_SU_Contraseña"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:background="@drawable/borde_redondo"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/hint_contraseña"
         android:inputType="textPersonName|textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.623" />
+        app:layout_constraintVertical_bias="0.684" />
 
     <Spinner
         android:id="@+id/spinner_SU"
-        android:layout_width="215dp"
-        android:layout_height="23dp"
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:background="@drawable/borde_redondo"
         android:spinnerMode="dialog"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.713" />
+        app:layout_constraintVertical_bias="0.795" />
 
     <Button
         android:id="@+id/btn_SU_Registrarse"
@@ -109,20 +126,26 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.808" />
+        app:layout_constraintVertical_bias="0.926"
+        android:backgroundTint="#4079BF"
+        app:cornerRadius="30dp"
+        app:strokeColor="#000000"
+        app:strokeWidth="1dp"/>
 
     <EditText
         android:id="@+id/et_SU_Usuario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="240dp"
+        android:layout_height="30dp"
+        android:background="@drawable/borde_redondo"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/hint_usuario"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.537" />
+        app:layout_constraintVertical_bias="0.567" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

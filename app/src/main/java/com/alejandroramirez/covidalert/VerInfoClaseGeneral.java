@@ -2,6 +2,7 @@ package com.alejandroramirez.covidalert;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.reflect.TypeVariable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class VerInfoClaseGeneral extends AppCompatActivity implements Response.ErrorListener, Response.Listener<JSONObject> {
 
@@ -35,8 +40,8 @@ public class VerInfoClaseGeneral extends AppCompatActivity implements Response.E
     JsonRequest jrq;
     Clase clase;
     Usuario usuario;
-    int inscrito=6;
-    String accion,activo="nose";
+    int inscrito = 6;
+    String accion, activo = "nose";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,45 +65,57 @@ public class VerInfoClaseGeneral extends AppCompatActivity implements Response.E
         obtenerDatos(aidi);
 
 
-
-        btnAsistir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intento;
-                switch (accion) {
-                    case ("Darse de baja"):
-                        baja();
-                        intento = new Intent(getApplicationContext(), PaginaInicioAlumno.class);
-                        intento.putExtra("usuario", usuario);
-                        startActivity(intento);
-                        break;
-                    case ("Inscribirse"):
-                        Toast.makeText(getApplicationContext(), "Me inscribire", Toast.LENGTH_SHORT).show();
-                        if (tfContra.getText().toString().equals(contra)) {
-                            inscripcion();
-                            intento = new Intent(getApplicationContext(), PaginaInicioAlumno.class);
-                            intento.putExtra("usuario", usuario);
-                            startActivity(intento);
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
+        btnAsistir.setOnClickListener(view -> {
+            Intent intento;
+            switch (accion) {
+                case ("Darse de baja"):
+                    baja();
+                    intento = new Intent(getApplicationContext(), PaginaInicioAlumno.class);
+                    intento.putExtra("usuario", usuario);
+                    startActivity(intento);
+                    break;
+                case ("Inscribirse"):
+                    //Fecha que nos daria el objeto
+                    String fechaObj = clase.getFecha();
+                    //Se crea el formato de fecha
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                    try {
+                        Date dateObj = format.parse(fechaObj);
+                        Calendar calendar=Calendar.getInstance();
+                        Date dateToday=calendar.getTime();
+                        int dif=(int) ((dateObj.getTime()-dateToday.getTime())/86400000);
+                        if(dif<=1){
+                            dif++;
                         }
-                        break;
-
-                    case ("Editar"):
-                        Toast.makeText(getApplicationContext(), "Editare", Toast.LENGTH_SHORT).show();
-                        intento = new Intent(getApplicationContext(), AgregarClase.class);
-                        intento.putExtra("Edicion","editar");
-                        intento.putExtra("clase",clase);
-                        intento.putExtra("usuario", usuario);
-                        startActivity(intento);
-                        break;
-                }
-
+                        if(dif<=1){
+                            if(tfContra.getText().toString().equals(clase.getContra())){
+                                intento = new Intent(getApplicationContext(), Formulario.class);
+                                intento.putExtra("clase", clase);
+                                intento.putExtra("usuario", usuario);
+                                startActivity(intento);
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Solo te puedes inscribir el mismo dia o un dia antes", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (ParseException exception) {
+                        Toast.makeText(getApplicationContext(), exception.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case ("Editar"):
+                    intento = new Intent(getApplicationContext(), AgregarClase.class);
+                    intento.putExtra("Edicion", "editar");
+                    intento.putExtra("clase", clase);
+                    intento.putExtra("usuario", usuario);
+                    startActivity(intento);
+                    break;
             }
+
         });
     }
 
-    private void comprobarInscrito() throws InterruptedException {
+    private void comprobarInscrito() {
         JsonObjectRequest solicitud = new JsonObjectRequest(Request.Method.GET,
                 "https://a217200082.000webhostapp.com/comprobarInscrito.php?clase=" + clase.getId() + "&usuario=" + usuario.getId(), null,
                 response -> {
@@ -107,7 +124,7 @@ public class VerInfoClaseGeneral extends AppCompatActivity implements Response.E
                         assert jsonArray != null;
                         JSONObject claseObject = jsonArray.getJSONObject(0);
                         inscrito = claseObject.getInt("existe");
-                        if (inscrito==1) {
+                        if (inscrito == 1) {
                             tfContra.setVisibility(View.INVISIBLE);
                             btnAsistir.setText(R.string.txtDesincribirse);
                             accion = "Darse de baja";
@@ -136,7 +153,8 @@ public class VerInfoClaseGeneral extends AppCompatActivity implements Response.E
         };
         rq.add(solicitud);
     }
-    private void baja(){
+
+    private void baja() {
         StringRequest solicitud = new StringRequest(Request.Method.POST, "https://a217200082.000webhostapp.com/eliminarAsistencia.php?clase=" +
                 clase.getId() + "&usuario=" + usuario.getId(),
                 response -> {
@@ -189,13 +207,12 @@ public class VerInfoClaseGeneral extends AppCompatActivity implements Response.E
             if (usuario.getTipo().equals("Alumno")) {//if para ver si es alumno
                 tfContra.setClickable(false);
                 comprobarInscrito();
-
             } else {
                 btnAsistir.setText(R.string.txtEditar);
                 tfContra.setText(clase.getContra());
                 accion = "Editar";
             }
-            if(!clase.getStatus().equals("proxima")){
+            if (!clase.getStatus().equals("proxima")) {
                 btnAsistir.setVisibility(View.INVISIBLE);
             }
 

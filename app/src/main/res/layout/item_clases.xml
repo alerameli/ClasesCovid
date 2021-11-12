@@ -5,53 +5,109 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D6BEC4"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="#FFFFFF">
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_item_nombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre"
+            android:textSize="25sp" />
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_item_nombre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nombre"
-                android:textSize="25sp" />
+                android:id="@+id/textView3"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:text="Profesor:"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tv_item_prop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="10"
                 android:text="prop" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="Fecha:"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tv_item_fecha"
-                android:layout_width="wrap_content"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="10"
                 android:text="Fecha" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Hora:"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tv_item_hora"
-                android:layout_width="wrap_content"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
+                android:layout_weight="10"
                 android:text="Hora" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Lugar:"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tv_item_lugar"
-                android:layout_width="wrap_content"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="11dp"
+                android:layout_weight="10"
                 android:text="lugar" />
-
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
 
 </LinearLayout>
