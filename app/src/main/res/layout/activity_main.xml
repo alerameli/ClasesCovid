@@ -5,25 +5,33 @@
     android:id="@+id/layout_inciar_sesion"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#BBD5C1"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/tv_IniciarSesion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="119dp"
+        android:gravity="center|center_horizontal"
+        android:fontFamily="@font/fugaz_one"
         android:text="@string/txt_inciar"
+        android:background="#4079BF"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.088" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/et_IS_Usuario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="230dp"
+        android:layout_height="40dp"
+        android:background="@drawable/borde_redondo"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/hint_usuario"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,9 +42,11 @@
 
     <EditText
         android:id="@+id/et_IS_Contraseña"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="230dp"
+        android:layout_height="40dp"
+        android:background="@drawable/borde_redondo"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/hint_contraseña"
         android:inputType="textPersonName|textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -50,24 +60,34 @@
         android:id="@+id/btn_IS_Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#4079BF"
+        android:shadowColor="#0053B2CA"
         android:text="@string/txt_login"
+        app:cornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.582" />
+        app:layout_constraintVertical_bias="0.582"
+        app:strokeColor="#000000"
+        app:strokeWidth="1dp" />
 
     <Button
         android:id="@+id/btn_IS_Signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:text="@string/txt_SignUp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.695" />
+        app:layout_constraintVertical_bias="0.695"
+        android:backgroundTint="#4079BF"
+        app:cornerRadius="30dp"
+        app:strokeColor="#000000"
+        app:strokeWidth="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

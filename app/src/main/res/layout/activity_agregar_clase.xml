@@ -4,27 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#BBD5C1"
     tools:context=".AgregarClase">
 
     <EditText
-        android:id="@+id/et_AC_Nombre"
-        android:layout_width="332dp"
-        android:layout_height="47dp"
+        android:id="@+id/et_AC_Desc"
+        android:layout_width="333dp"
+        android:layout_height="133dp"
+        android:background="@drawable/borde_redondo"
         android:ems="10"
-        android:hint="@string/hint_nombreEvento"
+        android:gravity="center_horizontal"
+        android:hint="@string/hint_descripcion"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.07" />
+        app:layout_constraintVertical_bias="0.354" />
+
+    <Button
+        android:id="@+id/btn_AgregarClase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_AgregarClase"
+        android:textColor="#F6F5F5"
+        android:backgroundTint="#4079BF"
+        app:cornerRadius="30dp"
+        app:strokeColor="#000000"
+        app:strokeWidth="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.964" />
 
     <EditText
         android:id="@+id/et_AC_Lugar"
         android:layout_width="169dp"
-        android:layout_height="48dp"
+        android:layout_height="30dp"
+        android:background="@drawable/borde_redondo"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/hint_lugarEvento"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,15 +52,30 @@
         app:layout_constraintHorizontal_bias="0.161"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.166" />
+        app:layout_constraintVertical_bias="0.221" />
+
+    <Spinner
+        android:id="@+id/spinner_hora"
+        android:layout_width="156dp"
+        android:layout_height="30dp"
+        android:background="@drawable/borde_redondo"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.597" />
 
     <EditText
         android:id="@+id/et_AC_Fecha"
         android:layout_width="161dp"
-        android:layout_height="50dp"
+        android:layout_height="30dp"
+        android:background="@drawable/borde_redondo"
         android:clickable="true"
         android:ems="10"
         android:focusable="false"
+        android:gravity="center"
         android:hint="@string/hint_fecha"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,49 +83,57 @@
         app:layout_constraintHorizontal_bias="0.84"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.164" />
+        app:layout_constraintVertical_bias="0.221" />
 
     <Spinner
-        android:id="@+id/spinner_hora"
-        android:layout_width="156dp"
-        android:layout_height="22dp"
+        android:id="@+id/spinner_status"
+        android:layout_width="158dp"
+        android:layout_height="30dp"
+        android:background="@drawable/borde_redondo"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.543" />
+        app:layout_constraintVertical_bias="0.867" />
+
+    <TextView
+        android:id="@+id/textoStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.817" />
 
     <EditText
-        android:id="@+id/et_AC_Desc"
-        android:layout_width="333dp"
-        android:layout_height="133dp"
+        android:id="@+id/et_AC_Nombre"
+        android:layout_width="332dp"
+        android:layout_height="30dp"
+        android:background="@drawable/borde_redondo"
         android:ems="10"
-        android:gravity="top"
-        android:hint="@string/hint_descripcion"
+        android:gravity="center"
+        android:hint="@string/hint_nombreEvento"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.291" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/txt_hora"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintVertical_bias="0.124" />
 
     <EditText
         android:id="@+id/et_AC_Contra"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/borde_redondo"
         android:ems="10"
+        android:gravity="center"
         android:hint="@string/hint_ContraseñaClase"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -98,40 +141,46 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.797" />
-
-    <Button
-        android:id="@+id/btn_AgregarClase"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/txt_AgregarClase"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.909" />
+        app:layout_constraintVertical_bias="0.717" />
 
     <TextView
-        android:id="@+id/textoStatus"
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Status"
+        android:text="@string/txt_hora"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.602" />
+        app:layout_constraintVertical_bias="0.553" />
 
-    <Spinner
-        android:id="@+id/spinner_status"
-        android:layout_width="158dp"
-        android:layout_height="21dp"
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#4079BF"
+        android:fontFamily="@font/fugaz_one"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contraseña"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.647" />
+        app:layout_constraintVertical_bias="0.664" />
 </androidx.constraintlayout.widget.ConstraintLayout>

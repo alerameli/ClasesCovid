@@ -33,7 +33,7 @@ public class AgregarClase extends AppCompatActivity {
     Usuario usuario;
     String URL, edicion="xd";
     Clase clase;
-    TextView textoStatus;
+    TextView textoStatus,titulo,textoContra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +49,8 @@ public class AgregarClase extends AppCompatActivity {
         tfContra = findViewById(R.id.et_AC_Contra);
         btnAgregar = findViewById(R.id.btn_AgregarClase);
         textoStatus= findViewById(R.id.textoStatus);
+        titulo=findViewById(R.id.textView20);
+        textoContra=findViewById(R.id.textView21);
 
         usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
         edicion = getIntent().getExtras().getString("Edicion");
@@ -71,8 +73,11 @@ public class AgregarClase extends AppCompatActivity {
         if (edicion.equals("editar")) {
             clase = (Clase) getIntent().getExtras().getSerializable("clase");
             llenarCampos();
+            titulo.setText("Editar clase");
         }else{
+            titulo.setText("Agregar clase");
             textoStatus.setVisibility(View.INVISIBLE);
+            textoContra.setVisibility(View.INVISIBLE);
             spinStatus.setVisibility(View.INVISIBLE);
         }
         tfFecha.setOnClickListener(view -> {
@@ -81,7 +86,7 @@ public class AgregarClase extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         // +1 because January is zero
-                        final String selectedDate = day + " / " + (month + 1) + " / " + year;
+                        final String selectedDate = day + "/" + (month + 1) + "/" + year;
                         tfFecha.setText(selectedDate);
                     }
                 });

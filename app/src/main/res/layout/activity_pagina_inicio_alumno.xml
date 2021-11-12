@@ -5,16 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#BBD5C1"
     tools:context=".PaginaInicioAlumno">
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Materias Disponibles" />
+        android:layout_height="50dp"
+        android:background="#4079BF"
+        android:fontFamily="@font/fugaz_one"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_PIA"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="729dp" />
 </LinearLayout>

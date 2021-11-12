@@ -1,6 +1,7 @@
 package com.alejandroramirez.covidalert;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -25,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 public class PaginaInicioAlumno extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener {
@@ -34,6 +37,7 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
     private RecyclerView rv;
     private RequestQueue rq;
     private JsonRequest jrq;
+    private TextView titulo;
 
     private ListaClasesAdapter adapter;
     private ArrayList<Clase> listaClases;
@@ -44,6 +48,9 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pagina_inicio_alumno);
+
+        titulo=findViewById(R.id.textView2);
+        titulo.setText("Materias disponibles");
 
         rv = findViewById(R.id.rv_PIA);
         rq = Volley.newRequestQueue(getApplicationContext());
@@ -56,10 +63,12 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
         URL = "https://a217200082.000webhostapp.com/mostrarClasesDisponiblesAlumno.php?AIDI=" + usuario.getId();
 
         // Se inicializa el RecyclerView
-        rv.setLayoutManager(new LinearLayoutManager(this));
-
+        rv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        rv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         // Se obtienen las "lista de las clases".
         listarClases();
+
+
 
     }
 
@@ -104,14 +113,14 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
             rv.setAdapter(adapter);
 
         } catch (JSONException e) {
-            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"No se encontraron clases por mostrar", Toast.LENGTH_SHORT).show();
         }
     }
 
     // Error en la obtencion de la url
     @Override
     public void onErrorResponse(VolleyError error) {
-        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Ha ocurrido un error de conexion", Toast.LENGTH_SHORT).show();
     }
 
     // Menu para las distintas acciones que puede realizar el usuario
@@ -130,16 +139,19 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
                 URL = "https://a217200082.000webhostapp.com/mostrarClasesDisponiblesAlumno.php?AIDI=" + usuario.getId();
                 listaClases.clear();
                 listarClases();
+                titulo.setText("Materias disponibles");
                 break;
             case R.id.MisProximasClases:
                 URL = "https://a217200082.000webhostapp.com/mostrarClasesFuturasAlumno.php?AIDI=" + usuario.getId();
                 listaClases.clear();
                 listarClases();
+                titulo.setText("Mis proximas clases");
                 break;
             case R.id.MisClasesPasadas:
                 URL = "https://a217200082.000webhostapp.com/mostrarClasesPasadasAlumno.php?AIDI=" + usuario.getId();
                 listaClases.clear();
                 listarClases();
+                titulo.setText("Mis clases pasadas");
                 break;
             case R.id.GenerarAlerta:
                 break;

@@ -7,7 +7,7 @@
     <string name="hint_correo">Correo electronico</string>
     <string name="hint_celular">Celular</string>
     <string name="hint_nombreEvento">Nombre de la clase</string>
-    <string name="hint_lugarEvento">Lugar de la clase</string>
+    <string name="hint_lugarEvento">Salon de la clase</string>
     <string name="hint_fecha">Fecha de la clase</string>
     <string name="txt_hora">Hora de la clase</string>
     <string name="hint_ContraseñaClase">Contraseña de la clase</string>
@@ -31,4 +31,9 @@
     <string name="txtInscribirse">Inscribirse</string>
     <string name="txtDesincribirse">Desinscribirse</string>
     <string name="txtEditar">Editar clase</string>
+    <string name="txtForm3">No puedes asistir a esta clase, ya que significas un riesgo de contagio</string>
+    <string name="txtForm2">Puedes asistir, sin embargo, se te recomienda quedarte en casa unos dias para evitar un contagio. En caso de asistir, sigue con los
+    lineamientos para evitar los contagios de Covid-19</string>
+    <string name="txtForm1">Puedes asistir. No olvides cumplir con los protocolos para evitar la propagacion de Covid-19</string>
+    <string name="txtRegresar">Regresar</string>
 </resources>

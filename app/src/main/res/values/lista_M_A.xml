@@ -2,7 +2,7 @@
 <resources>
     <string-array name="tipo_array">
         <item>Seleccione un tipo de usuario</item>
-        <item>Maestro o personal administrativo</item>
+        <item>Maestro</item>
         <item>Alumno</item>
     </string-array>
 </resources>
