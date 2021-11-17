@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -41,6 +42,7 @@ public class PaginaInicioMaestro extends AppCompatActivity implements Response.E
     private RequestQueue rq;
     private JsonRequest jrq;
     private String URL;
+    private TextView titulo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

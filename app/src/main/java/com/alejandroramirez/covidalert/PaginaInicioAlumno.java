@@ -235,6 +235,11 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
                 listarClases();
                 titulo.setText("Mis clases pasadas");
                 break;
+            case R.id.VerAlumnosInfectados:
+                Intent intento=new Intent(getApplicationContext(),VerAlumnosInfectados.class);
+                intento.putExtra("usuario",usuario);
+                startActivity(intento);
+                break;
             case R.id.GenerarAlerta:
                 break;
         }

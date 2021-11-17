@@ -86,7 +86,7 @@ public class BusquedaAlertas implements Response.Listener<JSONObject>, Response.
 
                         // Se crea un Objeto tipo "Usuario", añadiendo los datos del mismo
                         Usuario usuario = new Usuario();
-                        usuario.setId(claseObject.getInt("usuario_id"));
+                        //usuario.setId(claseObject.getInt("usuario_id"));
                         usuario.setNombres(claseObject.getString("usuario_nombres"));
                         usuario.setApellidos(claseObject.getString("usuario_apellidos"));
                         usuario.setCelular(claseObject.getString("usuario_celular"));
@@ -94,7 +94,7 @@ public class BusquedaAlertas implements Response.Listener<JSONObject>, Response.
                         usuario.setTipo(claseObject.getString("usuario_tipo"));
 
                         ArrayList<String> alerta = new ArrayList<String>();
-                        alerta.add(claseObject.getString("alerta_clase"));
+                        //alerta.add(claseObject.getString("alerta_clase"));
                         alerta.add(claseObject.getString("alerta_positivo"));
                         alerta.add(claseObject.getString("alerta_sintomas"));
                         alerta.add(claseObject.getString("alerta_fecha"));
@@ -134,7 +134,8 @@ public class BusquedaAlertas implements Response.Listener<JSONObject>, Response.
             }
 
         } catch (JSONException e) {
-            Toast.makeText(mContext,"No se encontraron clases por mostrar", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(mContext,"No se encontraron clases por mostrar", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext,e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
