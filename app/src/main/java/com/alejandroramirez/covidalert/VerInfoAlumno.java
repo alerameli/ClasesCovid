@@ -32,7 +32,6 @@ public class VerInfoAlumno extends AppCompatActivity {
     private ListaClasesAdapter adapter;
     private ArrayList<Clase> listaClases;
     int compaID;
-    String valor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +102,6 @@ public class VerInfoAlumno extends AppCompatActivity {
                                     claseObject.getString("clase_status"),
                                     claseObject.getString("clase_propietario")
                             );
-                            clase.setHost(valor);
                             listaClases.add(clase);
                         }
                         adapter = new ListaClasesAdapter(usuario, listaClases);
