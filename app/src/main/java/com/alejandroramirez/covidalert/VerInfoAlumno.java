@@ -43,10 +43,11 @@ public class VerInfoAlumno extends AppCompatActivity {
         tv_celular=findViewById(R.id.tv_IU_Celular);
         tv_correo=findViewById(R.id.tv_IU_correo);
         rv=findViewById(R.id.rv_UI_Clases);
-        listaClases = new ArrayList<Clase>();
+        listaClases = new ArrayList<>();
 
         usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
         Toast.makeText(getApplicationContext(), usuario.getNombres(), Toast.LENGTH_SHORT).show();
+
         rq = Volley.newRequestQueue(getApplicationContext());
         int aidi = getIntent().getExtras().getInt("ID");
 
@@ -84,13 +85,14 @@ public class VerInfoAlumno extends AppCompatActivity {
 
 
     private void mostrarClases(){
-        String URL="https://a217200082.000webhostapp.com/mostrarClasesIguales.php?User="+usuario.getId()+"&Compa="+compaID;
+        String URL="https://a217200082.000webhostapp.com/mostrarClasesIguales_R.php?User="+usuario.getId()+"&Compa="+compaID;
         JsonObjectRequest solicitud=new JsonObjectRequest(Request.Method.GET,URL,null,
                 response -> {
                     try {
                         JSONArray jsonArray = response.optJSONArray("datos");
                         for (int i = 0; i < Objects.requireNonNull(jsonArray).length(); i++) {
                             JSONObject claseObject = jsonArray.getJSONObject(i);
+
                             Clase clase = new Clase(
                                     claseObject.getInt("clase_id"),
                                     claseObject.getString("clase_nombre"),
@@ -98,13 +100,13 @@ public class VerInfoAlumno extends AppCompatActivity {
                                     claseObject.getString("clase_hora"),
                                     claseObject.getString("clase_desc"),
                                     claseObject.getString("clase_fecha"),
-                                    claseObject.getString("clase_contra"),
+                                    "",
                                     claseObject.getString("clase_status"),
-                                    claseObject.getString("clase_propietario")
+                                    claseObject.getString("usuario_nombres") + " " + claseObject.getString("usuario_apellidos")
                             );
                             listaClases.add(clase);
                         }
-                        adapter = new ListaClasesAdapter(usuario, listaClases);
+                        adapter = new ListaClasesAdapter(usuario, listaClases,this);
                         rv.setAdapter(adapter);
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(),"No se encontraron clases por mostrar", Toast.LENGTH_SHORT).show();

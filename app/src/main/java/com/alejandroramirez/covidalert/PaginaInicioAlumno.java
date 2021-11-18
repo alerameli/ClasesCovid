@@ -189,7 +189,7 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
             }
 
             // Se crea un adaptador para el RecycleView
-            adapter = new ListaClasesAdapter(usuario, listaClases);
+            adapter = new ListaClasesAdapter(usuario, listaClases, this);
 
             // Se añade el adaptador en el RecycleView
             rv.setAdapter(adapter);

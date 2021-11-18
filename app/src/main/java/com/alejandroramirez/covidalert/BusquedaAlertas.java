@@ -26,15 +26,15 @@ public class BusquedaAlertas implements Response.Listener<JSONObject>, Response.
 
     private RequestQueue rq;
     private JsonRequest jrq;
-    private Context mContext;
+    private final Context mContext;
 
     private Boolean alerta = false;
-    private ArrayList<Clase> mListaClases = new ArrayList<>();
-    private ArrayList<Usuario> mListaUsuarios = new ArrayList<>();
-    private ArrayList<ArrayList<String>> mListaAlerta = new ArrayList<>();
+    private final ArrayList<Clase> mListaClases = new ArrayList<>();
+    private final ArrayList<Usuario> mListaUsuarios = new ArrayList<>();
+    private final ArrayList<ArrayList<String>> mListaAlerta = new ArrayList<>();
     private String now;
     public int valorBusqueda;
-    private int IDUsuario;
+    private final int IDUsuario;
 
     public BusquedaAlertas(Context context, int IDUsuario){
         mContext = context;

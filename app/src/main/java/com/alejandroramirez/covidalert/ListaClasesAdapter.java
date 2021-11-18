@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,10 +17,12 @@ public class ListaClasesAdapter extends RecyclerView.Adapter<ListaClasesAdapter.
 
     public ArrayList<Clase> listaClases;
     Usuario usuario;
+    Context context;
 
-    public ListaClasesAdapter(Usuario usuario,ArrayList<Clase> listaClases) {
+    public ListaClasesAdapter(Usuario usuario,ArrayList<Clase> listaClases, Context context) {
         this.listaClases = listaClases;
         this.usuario=usuario;
+        this.context = context;
     }
 
     @NonNull
