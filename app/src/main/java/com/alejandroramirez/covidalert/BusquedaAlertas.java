@@ -29,20 +29,15 @@ public class BusquedaAlertas implements Response.Listener<JSONObject>, Response.
     private final Context mContext;
 
     private Boolean alerta = false;
-    private final ArrayList<Clase> mListaClases = new ArrayList<>();
-    private final ArrayList<Usuario> mListaUsuarios = new ArrayList<>();
-    private final ArrayList<ArrayList<String>> mListaAlerta = new ArrayList<>();
     private String now;
-    public int valorBusqueda;
     private final int IDUsuario;
+
+    private int countClasesInfected;
+    private int countUserInfected;
 
     public BusquedaAlertas(Context context, int IDUsuario){
         mContext = context;
         this.IDUsuario = IDUsuario;
-    }
-
-    public void setValorBusqueda(int valorBusqueda) {
-        this.valorBusqueda = valorBusqueda;
     }
 
     public String getDate(){
@@ -52,16 +47,13 @@ public class BusquedaAlertas implements Response.Listener<JSONObject>, Response.
         return new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault()).format(c.getTime());
     }
 
-    public void getAlertaUsuario(){
-        String URL = "https://a217200082.000webhostapp.com/mostrarAlertasUsuario.php?" +
-                     "BEFORE5DAYS="+getDate()+"&" +
-                     "TODAY="+now;
-        volleyRequest(URL);
-    }
-
-    public void getAlertaClases(){
-        String URL = "https://a217200082.000webhostapp.com/mostrarMisClases.php?" +
-                "IDUsuario="+IDUsuario;
+    public void getAlertaBusqueda(){
+        countClasesInfected = 0;
+        countUserInfected = 0;
+        String URL = "https://a217200082.000webhostapp.com/mostrarAlertasClasesInfected.php?" +
+                     "BEFORE5DAYS=" + getDate() + "&" +
+                     "TODAY=" + now + "&" +
+                     "IDUsuario=" + IDUsuario;
         volleyRequest(URL);
     }
 
@@ -75,62 +67,15 @@ public class BusquedaAlertas implements Response.Listener<JSONObject>, Response.
         try {
             JSONArray jsonArray = response.optJSONArray("datos");
 
-            switch (valorBusqueda){
-                case 0:
+            setAlerta(jsonArray.length() > 0);
 
-                    setAlerta(jsonArray.length() > 0);
+            for (int i = 0; i < Objects.requireNonNull(jsonArray).length(); i++) {
+                // Se obtiene la clase del Array de la base de datos
+                JSONObject claseObject = jsonArray.getJSONObject(i);
 
-                    for (int i = 0; i < Objects.requireNonNull(jsonArray).length(); i++) {
-                        // Se obtiene la clase del Array de la base de datos
-                        JSONObject claseObject = jsonArray.getJSONObject(i);
+                countUserInfected = claseObject.getInt("userInfected");
+                countClasesInfected = claseObject.getInt("claseInfected");
 
-                        // Se crea un Objeto tipo "Usuario", añadiendo los datos del mismo
-                        Usuario usuario = new Usuario();
-                        //usuario.setId(claseObject.getInt("usuario_id"));
-                        usuario.setNombres(claseObject.getString("usuario_nombres"));
-                        usuario.setApellidos(claseObject.getString("usuario_apellidos"));
-                        usuario.setCelular(claseObject.getString("usuario_celular"));
-                        usuario.setCorreo(claseObject.getString("usuario_correo"));
-                        usuario.setTipo(claseObject.getString("usuario_tipo"));
-
-                        ArrayList<String> alerta = new ArrayList<String>();
-                        //alerta.add(claseObject.getString("alerta_clase"));
-                        alerta.add(claseObject.getString("alerta_positivo"));
-                        alerta.add(claseObject.getString("alerta_sintomas"));
-                        alerta.add(claseObject.getString("alerta_fecha"));
-
-                        mListaAlerta.add(alerta);
-
-                        // Se agregan al listado de usuarios
-                        mListaUsuarios.add(usuario);
-                    }
-
-                    break;
-                case 1:
-
-                    for (int i = 0; i < Objects.requireNonNull(jsonArray).length(); i++) {
-                        // Se obtiene la clase del Array de la base de datos
-                        JSONObject claseObject = jsonArray.getJSONObject(i);
-
-                        // Se crea un Objeto tipo "Clase", añadiendo los datos del mismo
-                        Clase clase = new Clase(
-                                claseObject.getInt("clase_id"),
-                                claseObject.getString("clase_nombre"),
-                                claseObject.getString("clase_lugar"),
-                                claseObject.getString("clase_hora"),
-                                claseObject.getString("clase_desc"),
-                                claseObject.getString("clase_fecha"),
-                                "",
-                                claseObject.getString("clase_status"),
-                                claseObject.getString("clase_propietario")
-                        );
-
-                        // Se agregan al listado de clases
-                        mListaClases.add(clase);
-
-                    }
-
-                    break;
             }
 
         } catch (JSONException e) {
@@ -152,9 +97,11 @@ public class BusquedaAlertas implements Response.Listener<JSONObject>, Response.
         this.alerta = alerta;
     }
 
-    public ArrayList<Usuario> getListaUsuarios() {return mListaUsuarios;}
+    public int getCountClasesInfected() {
+        return countClasesInfected;
+    }
 
-    public ArrayList<Clase> getListaClases(){return mListaClases;}
-
-    public ArrayList<ArrayList<String>> getListaAlerta(){return mListaAlerta;}
+    public int getCountUserInfected() {
+        return countUserInfected;
+    }
 }

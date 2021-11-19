@@ -19,7 +19,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
 
 public class VerInfoAlumno extends AppCompatActivity {
@@ -32,6 +35,7 @@ public class VerInfoAlumno extends AppCompatActivity {
     private ListaClasesAdapter adapter;
     private ArrayList<Clase> listaClases;
     int compaID;
+    private String now;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +87,19 @@ public class VerInfoAlumno extends AppCompatActivity {
         rq.add(solicitud);
     }
 
+    public String getDate(){
+        Calendar c = Calendar.getInstance();
+        now = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(c.getTime());
+        c.add(Calendar.DATE, -5);
+        return new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault()).format(c.getTime());
+    }
 
     private void mostrarClases(){
-        String URL="https://a217200082.000webhostapp.com/mostrarClasesIguales_R.php?User="+usuario.getId()+"&Compa="+compaID;
+        String URL="https://a217200082.000webhostapp.com/mostrarClasesIguales_R.php?" +
+                   "User=" + usuario.getId() + "&" +
+                   "Compa="+compaID + "&" +
+                   "BEFORE5DAYS=" + getDate() + "&" +
+                   "TODAY=" + now;
         JsonObjectRequest solicitud=new JsonObjectRequest(Request.Method.GET,URL,null,
                 response -> {
                     try {

@@ -49,16 +49,13 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
     private TextView titulo;
 
     private ListaClasesAdapter adapter;
-    private ArrayList<Clase> listaClases;
     private PendingIntent mPendingIntent;
     private final static String CHANNEL_ID = "NOTIFICACION";
     private static final int NOTIFICACION_ID = 11636;
-    private ArrayList<Usuario> AlertaListaUsuario;
-    private ArrayList<Clase> miListaClases;
-    private ArrayList<ArrayList<String>> ListaAlerta;
+    private int countClasesInfected = 0;
+    private int countUserInfected = 0;
     private String date;
-
-    private ArrayList<Clase> AlertaListaClases;
+    private ArrayList<Clase> listaClases = new ArrayList<>();
 
     private String URL;
 
@@ -72,7 +69,6 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
 
         rv = findViewById(R.id.rv_PIA);
         rq = Volley.newRequestQueue(getApplicationContext());
-        listaClases = new ArrayList<Clase>();
 
         // Se obtiene los datos de "Usuario" de la clase anterior "MainActivity"
         usuario = (Usuario) getIntent().getSerializableExtra("usuario");
@@ -92,15 +88,11 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
 
     private void busquedaAlertas() {
         BusquedaAlertas busquedaAlertas = new BusquedaAlertas(getApplicationContext(), usuario.getId());
-        busquedaAlertas.setValorBusqueda(0);
-        busquedaAlertas.getAlertaUsuario();
-        //busquedaAlertas.setValorBusqueda(1);
-        //busquedaAlertas.getAlertaClases();
+        busquedaAlertas.getAlertaBusqueda();
         date = busquedaAlertas.getDate();
         if(busquedaAlertas.getAlerta()){
-            AlertaListaUsuario = busquedaAlertas.getListaUsuarios();
-            //miListaClases = busquedaAlertas.getListaClases();
-            ListaAlerta = busquedaAlertas.getListaAlerta();
+            countClasesInfected = busquedaAlertas.getCountClasesInfected();
+            countUserInfected = busquedaAlertas.getCountUserInfected();
             createNotificationChannel();
         }
     }
@@ -117,41 +109,24 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
 
     }
 
-    private int getCantidadClasesSimilares(){
-        int count = 0;
-        //for (int i = 0; i < miListaClases.size(); i++){
-        //    for (int o = 0; o < ListaAlerta.size(); o++){
-        //        if(miListaClases.get(i).getId() == Integer.parseInt(ListaAlerta.get(o).get(0))){
-        //            AlertaListaClases.add(miListaClases.get(i));
-        //            count++;
-        //        }
-        //    }
-        //}
-
-        return count;
-    }
-
     @SuppressLint("ResourceAsColor")
     private void createNotification() {
-        int count;
-        if(ListaAlerta == null)
-            count = 0;
-        else
-            count = getCantidadClasesSimilares();
+        if(countClasesInfected > 0) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
+            builder.setContentTitle("Aviso de contagio");
+            builder.setAutoCancel(true);
+            builder.setContentText("Hay " + countClasesInfected + " de tus clases con al menos " +
+                                            countUserInfected + " estudiante positivo.");
+            builder.setColor(R.color.background_green);
+            builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            builder.setLights(Color.CYAN, 1000, 1000);
+            builder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
+            builder.setDefaults(Notification.DEFAULT_SOUND);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID);
-        builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setContentTitle("Aviso de contagio");
-        builder.setAutoCancel(true);
-        builder.setContentText("Hay "+count+" de tus clases con almenos un estudiante positivo.");
-        builder.setColor(R.color.background_green);
-        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        builder.setLights(Color.CYAN, 1000, 1000);
-        builder.setVibrate(new long[]{1000,1000,1000,1000,1000});
-        builder.setDefaults(Notification.DEFAULT_SOUND);
-
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
-        notificationManagerCompat.notify(NOTIFICACION_ID,builder.build());
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
+            notificationManagerCompat.notify(NOTIFICACION_ID, builder.build());
+        }
     }
 
     // Metodo para la obtención de las "Listas de las clases" del Usuario
