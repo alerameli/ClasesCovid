@@ -1,11 +1,18 @@
 package com.alejandroramirez.covidalert;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +34,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
 
 public class PaginaInicioMaestro extends AppCompatActivity implements Response.ErrorListener, Response.Listener<JSONObject>{
@@ -38,11 +48,18 @@ public class PaginaInicioMaestro extends AppCompatActivity implements Response.E
     // Se crea la variable tipo Objeto de Usuario
     private Usuario usuario;
     private RecyclerView rv;
-    private ArrayList<Clase> listaClases;
     private RequestQueue rq;
     private JsonRequest jrq;
-    private String URL;
     private TextView titulo;
+
+    private final static String CHANNEL_ID = "NOTIFICACION";
+    private static final int NOTIFICACION_ID = 11636;
+    private int countUserInfected = 0;
+    private ArrayList<Clase> listaClases = new ArrayList<>();
+
+    private String URL;
+    private String now;
+    private int BETWEENDAYS = -5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +90,9 @@ public class PaginaInicioMaestro extends AppCompatActivity implements Response.E
             intento.putExtra("usuario", usuario);
             startActivity(intento);
         });
+
+        jsonQuery();
+
     }
 
     // Metodo para la obtención de las "Listas de las clases" del Usuario
@@ -151,5 +171,67 @@ public class PaginaInicioMaestro extends AppCompatActivity implements Response.E
                 break;
         }
         return true;
+    }
+
+
+    private void jsonQuery(){
+        String URL = "https://a217200082.000webhostapp.com/mostrarAlertasClasesInfected_teacher.php?" +
+                "BEFORE5DAYS=" + getDate() + "&" +
+                "TODAY=" + now + "&" +
+                "IDUsuario=" + usuario.getId();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, URL, null, response -> {
+                    try {
+                        JSONArray jsonArray = response.optJSONArray("datos");
+
+                        countUserInfected = Objects.requireNonNull(jsonArray).getInt(0);
+
+                        if (countUserInfected > 0){
+                            createNotificationChannel();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, error -> Toast.makeText(getApplicationContext(), "Ha ocurrido un error de conexion", Toast.LENGTH_SHORT).show());
+
+        rq.add(jsonObjectRequest);
+    }
+
+    public String getDate(){
+        Calendar c = Calendar.getInstance();
+        now = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(c.getTime());
+        c.add(Calendar.DATE, BETWEENDAYS);
+        return new SimpleDateFormat("yyyy-MM-dd",Locale.getDefault()).format(c.getTime());
+    }
+
+    private void createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Notificacion";
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+
+        createNotification();
+
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private void createNotification() {
+        if(countUserInfected > 0) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
+            builder.setContentTitle("Aviso de contagio");
+            builder.setAutoCancel(true);
+            builder.setContentText("Hay " + countUserInfected + " estudiante(s) positivo.");
+            builder.setColor(R.color.background_green);
+            builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            builder.setLights(Color.CYAN, 1000, 1000);
+            builder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
+            builder.setDefaults(Notification.DEFAULT_SOUND);
+
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
+            notificationManagerCompat.notify(NOTIFICACION_ID, builder.build());
+        }
     }
 }

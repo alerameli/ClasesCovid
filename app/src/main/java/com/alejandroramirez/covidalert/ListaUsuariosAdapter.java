@@ -30,6 +30,7 @@ public class ListaUsuariosAdapter extends RecyclerView.Adapter<ListaUsuariosAdap
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_usuario,parent,false);
         RecyclerView.LayoutParams lp=new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
+
         return new UsuarioViewHolder(usuarioInterfaz,view);
     }
 
