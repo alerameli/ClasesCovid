@@ -1,8 +1,10 @@
 package com.alejandroramirez.covidalert;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,6 +62,8 @@ public class PaginaInicioMaestro extends AppCompatActivity implements Response.E
     private String URL;
     private String now;
     private int BETWEENDAYS = -5;
+    private Menu mMenu;
+    private FragmentActivity fragmentActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,28 +74,79 @@ public class PaginaInicioMaestro extends AppCompatActivity implements Response.E
         usuario = (Usuario) getIntent().getSerializableExtra("usuario");
 
         fabAgregar = findViewById(R.id.fab_AC_Agrega);
+        fragmentActivity = this;
         rv = findViewById(R.id.rv_PIM);
         rq = Volley.newRequestQueue(getApplicationContext());
-        listaClases = new ArrayList<Clase>();
-
-        // Se crea una URL para mostrar las diferentes clases para el "Usuario"
-        URL = "https://a217200082.000webhostapp.com/mostrarClasesFuturasMaestro.php?AIDI=" + usuario.getId();
+        listaClases = new ArrayList<>();
 
         // Se inicializa el RecyclerView
         rv.setLayoutManager(new LinearLayoutManager(this));
 
-        // Se obtienen las "lista de las clases".
-        listarClases();
+        jsonQueryImInfected();
 
-        // Al accionar el boton flotante, iniciara una clase "AgregarClase"
-        fabAgregar.setOnClickListener(view -> {
-            Intent intento = new Intent(getApplicationContext(), AgregarClase.class);
-            intento.putExtra("Edicion","agregar");
-            intento.putExtra("usuario", usuario);
-            startActivity(intento);
-        });
+    }
 
-        jsonQuery();
+    private void onDisabled(){
+        rv.setVisibility(View.INVISIBLE);
+
+        int i = 0;
+        while (i < mMenu.size()){
+            mMenu.getItem(i).setVisible(false);
+            i++;
+        }
+        mMenu.getItem(mMenu.size()-1).setVisible(true);
+        mMenu.getItem(mMenu.size()-2).setVisible(true);
+    }
+
+    private void onEnabled(){
+        rv.setVisibility(View.VISIBLE);
+
+        int i = 0;
+        while (i < mMenu.size()){
+            mMenu.getItem(i).setVisible(true);
+            i++;
+        }
+        mMenu.getItem(mMenu.size()-2).setVisible(false);
+    }
+
+    private void jsonQueryImInfected() {
+
+        String URL = "https://a217200082.000webhostapp.com/mostrarEstoyInfectado.php?" +
+                "USER=" + usuario.getId() + "&" +
+                "BEFORE5DAYS=" + getDate() + "&" +
+                "TODAY=" + now;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, URL, null, response -> {
+                    try {
+                        if(Integer.parseInt(String.valueOf(response.getInt("dato"))) != 1){
+                            Toast.makeText(getApplicationContext(), "* Estas enfermo, no podras acceder al menu *", Toast.LENGTH_SHORT).show();
+                            onDisabled();
+                        }else{
+                            // Se crea una URL para mostrar las diferentes clases para el "Usuario"
+                            this.URL = "https://a217200082.000webhostapp.com/mostrarClasesFuturasMaestro.php?AIDI=" + usuario.getId();
+
+                            // Se obtienen las "lista de las clases".
+                            listarClases();
+
+                            // Al accionar el boton flotante, iniciara una clase "AgregarClase"
+                            fabAgregar.setOnClickListener(view -> {
+                                Intent intento = new Intent(getApplicationContext(), AgregarClase.class);
+                                intento.putExtra("Edicion","agregar");
+                                intento.putExtra("usuario", usuario);
+                                startActivity(intento);
+                            });
+                            jsonQuery();
+                            onEnabled();
+                            Toast.makeText(getApplicationContext(), "* Bienvenido *", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (JSONException e) {
+                        //Toast.makeText(mContext,"No se encontraron clases por mostrar", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }, error -> Toast.makeText(getApplicationContext(), "Ha ocurrido un error de conexion", Toast.LENGTH_SHORT).show());
+
+        rq.add(jsonObjectRequest);
 
     }
 
@@ -147,8 +202,9 @@ public class PaginaInicioMaestro extends AppCompatActivity implements Response.E
 
     // Menu para las distintas acciones que puede realizar el usuario
     public boolean onCreateOptionsMenu(Menu menu) {
+        mMenu = menu;
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_acciones_maestro, menu);
+        inflater.inflate(R.menu.menu_acciones_maestro, mMenu);
         return true;
     }
 
@@ -168,11 +224,52 @@ public class PaginaInicioMaestro extends AppCompatActivity implements Response.E
                 listarClases();
                 break;
             case R.id.GenerarAlertaM:
+                Intent intento_alert = new Intent(getApplicationContext(), GenerarAlerta.class);
+                intento_alert.putExtra("usuario", usuario);
+                startActivity(intento_alert);
+                break;
+            case R.id.LiberarAlertaM:
+                AlertDialog.Builder alert = new AlertDialog.Builder(fragmentActivity);
+                alert.setMessage("Al eliminar tus alertas, podras acceder al menu para volver a inscribirte libremente a tus materias.\n\n¿Desea eliminar tus alertas?").setCancelable(true)
+                        .setPositiveButton("Aceptar", ((dialog, which) -> {
+                            jsonQueryLiberarAlertas();
+                            dialog.dismiss();
+                        }))
+                        .setNegativeButton("Cancelar", ((dialog, which) -> dialog.cancel()));
+
+                AlertDialog title = alert.create();
+                title.setTitle("Liberar Alertas");
+                title.show();
+                break;
+            case R.id.cerrarSesionM:
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "* Cerrar sesion *", Toast.LENGTH_SHORT);
+                finish();
                 break;
         }
         return true;
     }
 
+    private void jsonQueryLiberarAlertas(){
+        String URL = "https://a217200082.000webhostapp.com/eliminarAlertas.php?" +
+                "USER=" + usuario.getId();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, URL, null, response -> {
+                    try {
+                        if(Integer.parseInt(String.valueOf(response.getInt("dato"))) != 1)
+                            Toast.makeText(getApplicationContext(), "* Se han eliminado con exito *", Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(getApplicationContext(), "* No eliminaron las alertas *", Toast.LENGTH_SHORT).show();
+
+                        jsonQueryImInfected();
+                    } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(),e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }, error -> Toast.makeText(getApplicationContext(), "Ha ocurrido un error de conexion", Toast.LENGTH_SHORT).show());
+
+        rq.add(jsonObjectRequest);
+    }
 
     private void jsonQuery(){
         String URL = "https://a217200082.000webhostapp.com/mostrarAlertasClasesInfected_teacher.php?" +

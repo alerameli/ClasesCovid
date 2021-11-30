@@ -1,27 +1,29 @@
 package com.alejandroramirez.covidalert;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.BoringLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,7 +40,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -61,6 +62,8 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
     private String URL;
     private String now;
     private int BETWEENDAYS = -5;
+    private Menu mMenu;
+    private FragmentActivity fragmentActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,8 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
         titulo=findViewById(R.id.textView2);
         titulo.setText("Materias disponibles");
 
+        fragmentActivity = this;
+
         rv = findViewById(R.id.rv_PIA);
 
         // Se obtiene los datos de "Usuario" de la clase anterior "MainActivity"
@@ -77,16 +82,67 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
 
         rq = Volley.newRequestQueue(getApplicationContext());
 
-        // Se crea una URL para mostrar las diferentes clases para el "Usuario"
-        URL = "https://a217200082.000webhostapp.com/mostrarClasesDisponiblesAlumno.php?AIDI="+usuario.getId();
-
         // Se inicializa el RecyclerView
         rv.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         rv.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        // Se obtienen las "lista de las clases".
-        listarClases();
 
-        jsonQuery();
+        jsonQueryImInfected();
+
+    }
+
+    private void onDisabled(){
+        rv.setVisibility(View.INVISIBLE);
+
+        int i = 0;
+        while (i < mMenu.size()){
+            mMenu.getItem(i).setVisible(false);
+            i++;
+        }
+        mMenu.getItem(mMenu.size()-1).setVisible(true);
+        mMenu.getItem(mMenu.size()-2).setVisible(true);
+    }
+
+    private void onEnabled(){
+        rv.setVisibility(View.VISIBLE);
+
+        int i = 0;
+        while (i < mMenu.size()){
+            mMenu.getItem(i).setVisible(true);
+            i++;
+        }
+        mMenu.getItem(mMenu.size()-2).setVisible(false);
+    }
+
+    private void jsonQueryImInfected() {
+
+        String URL = "https://a217200082.000webhostapp.com/mostrarEstoyInfectado.php?" +
+                "USER=" + usuario.getId() + "&" +
+                "BEFORE5DAYS=" + getDate() + "&" +
+                "TODAY=" + now;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, URL, null, response -> {
+                    try {
+                        if(Integer.parseInt(String.valueOf(response.getInt("dato"))) != 1){
+                            Toast.makeText(getApplicationContext(), "* Estas enfermo, no podras inscribirte *", Toast.LENGTH_SHORT).show();
+                            onDisabled();
+                        }else{
+                            // Se crea una URL para mostrar las diferentes clases para el "Usuario"
+                            this.URL = "https://a217200082.000webhostapp.com/mostrarClasesDisponiblesAlumno.php?AIDI="+usuario.getId();
+
+                            // Se obtienen las "lista de las clases".
+                            listarClases();
+                            jsonQuery();
+                            onEnabled();
+                            Toast.makeText(getApplicationContext(), "* Bienvenido *", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (JSONException e) {
+                        //Toast.makeText(mContext,"No se encontraron clases por mostrar", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }, error -> Toast.makeText(getApplicationContext(), "Ha ocurrido un error de conexion", Toast.LENGTH_SHORT).show());
+
+        rq.add(jsonObjectRequest);
 
     }
 
@@ -143,14 +199,15 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
 
     // Menu para las distintas acciones que puede realizar el usuario
     public boolean onCreateOptionsMenu(Menu menu) {
+        mMenu = menu;
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_acciones_alumno, menu);
+        inflater.inflate(R.menu.menu_acciones_alumno, mMenu);
         return true;
     }
 
     // Acciones que realiza el usuario al seleccionar un item del menu.
     // Al accionar algun item, se rellena el recyclerView con la informacion correcta.
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "ShowToast"})
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.ClasesDisponibles:
@@ -172,16 +229,57 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
                 titulo.setText("Mis clases pasadas");
                 break;
             case R.id.VerAlumnosInfectados:
-                Intent intento=new Intent(getApplicationContext(),VerAlumnosInfectados.class);
-                intento.putExtra("usuario",usuario);
-                startActivity(intento);
+                Intent intento_infect = new Intent(getApplicationContext(), VerAlumnosInfectados.class);
+                intento_infect.putExtra("usuario", usuario);
+                startActivity(intento_infect);
                 break;
             case R.id.GenerarAlerta:
+                Intent intento_alert = new Intent(getApplicationContext(), GenerarAlerta.class);
+                intento_alert.putExtra("usuario", usuario);
+                startActivity(intento_alert);
+                break;
+            case R.id.LiberarAlerta:
+                AlertDialog.Builder alert = new AlertDialog.Builder(fragmentActivity);
+                alert.setMessage("Al eliminar tus alertas, podras acceder al menu para volver a inscribirte libremente a tus materias.\n\n¿Desea eliminar tus alertas?").setCancelable(true)
+                    .setPositiveButton("Aceptar", ((dialog, which) -> {
+                        jsonQueryLiberarAlertas();
+                        dialog.dismiss();
+                    }))
+                    .setNegativeButton("Cancelar", ((dialog, which) -> dialog.cancel()));
+
+                AlertDialog title = alert.create();
+                title.setTitle("Liberar Alertas");
+                title.show();
+                break;
+            case R.id.cerrarSesion:
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "* Cerrar sesion *", Toast.LENGTH_SHORT);
+                finish();
                 break;
         }
         return true;
     }
 
+    private void jsonQueryLiberarAlertas(){
+        String URL = "https://a217200082.000webhostapp.com/eliminarAlertas.php?" +
+                "USER=" + usuario.getId();
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, URL, null, response -> {
+                    try {
+                        if(Integer.parseInt(String.valueOf(response.getInt("dato"))) != 1)
+                            Toast.makeText(getApplicationContext(), "* Se han eliminado con exito *", Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(getApplicationContext(), "* No eliminaron las alertas *", Toast.LENGTH_SHORT).show();
+
+                        jsonQueryImInfected();
+                    } catch (JSONException e) {
+                        Toast.makeText(getApplicationContext(),e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }, error -> Toast.makeText(getApplicationContext(), "Ha ocurrido un error de conexion", Toast.LENGTH_SHORT).show());
+
+        rq.add(jsonObjectRequest);
+    }
 
     private void jsonQuery(){
         String URL = "https://a217200082.000webhostapp.com/mostrarAlertasClasesInfected_student.php?" +
@@ -248,5 +346,4 @@ public class PaginaInicioAlumno extends AppCompatActivity implements Response.Li
             notificationManagerCompat.notify(NOTIFICACION_ID, builder.build());
         }
     }
-
 }

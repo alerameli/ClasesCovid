@@ -42,7 +42,6 @@ public class VerAlumnosInfectados extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_alumnos_infectados);
         usuario = (Usuario) getIntent().getSerializableExtra("usuario");
-        Toast.makeText(getApplicationContext(), usuario.getNombres(), Toast.LENGTH_SHORT).show();
 
         rv= findViewById(R.id.rv_AlumnosInfectados);
         rq = Volley.newRequestQueue(getApplicationContext());
