@@ -82,13 +82,10 @@ public class AgregarClase extends AppCompatActivity {
         }
         tfFecha.setOnClickListener(view -> {
             if (view.getId() == R.id.et_AC_Fecha) {
-                DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        // +1 because January is zero
-                        final String selectedDate = day + "/" + (month + 1) + "/" + year;
-                        tfFecha.setText(selectedDate);
-                    }
+                DatePickerFragment newFragment = DatePickerFragment.newInstance((datePicker, year, month, day) -> {
+                    // +1 because January is zero
+                    final String selectedDate = day + "/" + (month + 1) + "/" + year;
+                    tfFecha.setText(selectedDate);
                 });
                 newFragment.show(getSupportFragmentManager(), "datePicker");
             }
@@ -157,7 +154,6 @@ public class AgregarClase extends AppCompatActivity {
     }
 
     private void Agregar() {
-
         rq = Volley.newRequestQueue(getApplicationContext());
         nombre = tfNombre.getText().toString().trim();
         lugar = tfLugar.getText().toString().trim();
@@ -167,7 +163,6 @@ public class AgregarClase extends AppCompatActivity {
         hora = spinHora.getSelectedItem().toString();
         propietario = usuario.getId();
         status = "proxima";
-
         URL = "https://a217200082.000webhostapp.com/agregarClase.php?" +
                 "Nombre=" + nombre +
                 "&Lugar=" + lugar +
@@ -177,7 +172,6 @@ public class AgregarClase extends AppCompatActivity {
                 "&Hora=" + hora +
                 "&Propietario=" + propietario +
                 "&Status=" + status;
-
         StringRequest solicitud = new StringRequest(Request.Method.POST, URL,
                 response -> {
                     mostrarToast("Registro exitoso");

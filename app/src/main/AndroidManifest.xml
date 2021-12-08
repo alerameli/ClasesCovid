@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CovidAlert">
         <activity
+            android:name=".VerInfoAlumno"
+            android:exported="true" />
+        <activity
+            android:name=".VerAlumnosInfectados"
+            android:exported="true" />
+        <activity
             android:name=".Formulario"
             android:exported="true" />
         <activity

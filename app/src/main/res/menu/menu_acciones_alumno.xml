@@ -10,6 +10,16 @@
         android:id="@+id/MisClasesPasadas"
         android:title="Mis clases pasadas" />
     <item
+        android:id="@+id/VerAlumnosInfectados"
+        android:title="Compañeros infectados"/>
+    <item
         android:id="@+id/GenerarAlerta"
         android:title="Generar alerta covid"/>
+    <item
+        android:id="@+id/LiberarAlerta"
+        android:title="Liberar alertas"
+        android:visible="false"/>
+    <item
+        android:id="@+id/cerrarSesion"
+        android:title="Cerrar Sesión"/>
 </menu>

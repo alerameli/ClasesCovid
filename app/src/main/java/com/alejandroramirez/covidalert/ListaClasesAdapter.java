@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,20 +17,17 @@ public class ListaClasesAdapter extends RecyclerView.Adapter<ListaClasesAdapter.
 
     public ArrayList<Clase> listaClases;
     Usuario usuario;
+    Context context;
 
-    public ListaClasesAdapter(Usuario usuario,ArrayList<Clase> listaClases) {
+    public ListaClasesAdapter(Usuario usuario,ArrayList<Clase> listaClases, Context context) {
         this.listaClases = listaClases;
         this.usuario=usuario;
+        this.context = context;
     }
 
     @NonNull
     @Override
     public ClaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        /*
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_clases, null);
-        return new ClaseViewHolder(usuario,view);
-
-         */
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_clases, parent,false);
         RecyclerView.LayoutParams lp=new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
